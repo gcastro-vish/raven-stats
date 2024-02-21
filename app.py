@@ -221,7 +221,14 @@ def createDataFrame(route, bonus, tradepacks=tradepacks,materialsPrices=material
 
 # %% app
 st.set_page_config(layout='wide')
-st.title('Calculadora de Tradepacks')
+st.markdown("""
+<style>
+.small-font {
+    font-size:15px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown('# Calculadora de Tradepacks <p class="small-font">(Feito por Vish. Ravendawn nick: Vish Tankao)</p>', unsafe_allow_html=True)
 st.write('Atualize os preços e as demandas em suas respectivas abas')
 st.write('A fórmula utilizada nos calculos é')
 st.write('$ValorDeVenda = (ValorBase + 8*Distância)*Demanda*(1+Bônus)$')
