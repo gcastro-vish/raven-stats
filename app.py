@@ -259,7 +259,7 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-st.markdown('# Calculadora de Tradepacks <p class="small-font">(Feito por Vish. Ravendawn nick: Vish Tankao)</p>', unsafe_allow_html=True)
+st.markdown('# Calculadora de Tradepacks <p class="small-font">(Feito por Vish. Ravendawn nick (Angerhorn): Vish Tankao)</p>', unsafe_allow_html=True)
 st.write('Atualize os preços e as demandas em suas respectivas abas. Manual para salvar os dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-salvar-os-dados) e manual para inclusão de dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-incluir-novos-dados)')
 st.write('A fórmula utilizada nos calculos é')
 st.write('$ValorDeVenda = (ValorBase + 8*Distância)*Demanda*(1+Bônus)$')
