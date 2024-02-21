@@ -230,7 +230,7 @@ st.write(f'Atualmente o valor base é :red[{tradepackBaseValue}]')
 bufferTradepacks = BytesIO()
 with pd.ExcelWriter(bufferTradepacks, engine='xlsxwriter') as writer:
     pd.DataFrame({'materiais':tradepacks}).to_excel(writer, sheet_name='Demandas')
-    writer.close()
+    
 
 with st.sidebar:
     route = st.selectbox(label='Rota para fazer a entrega',
@@ -259,7 +259,7 @@ with tabs[1]:
     bufferMaterialPrices = BytesIO()
     with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
         pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')
-        writer.close()
+        
     with st.sidebar:
         st.download_button(':small_red_triangle_down: Download Preços',
                         bufferMaterialPrices,
@@ -277,7 +277,7 @@ with tabs[2]:
     bufferDemandsPerCent = BytesIO()
     with pd.ExcelWriter(bufferDemandsPerCent, engine='xlsxwriter') as writer:
         pd.DataFrame({'demanda':demandsPerCent}).to_excel(writer, sheet_name='Demandas')
-        writer.close()
+        
     with st.sidebar:
         st.download_button(':small_red_triangle_down: Download Demandas',
                         bufferDemandsPerCent,
