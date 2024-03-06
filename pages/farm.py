@@ -7,12 +7,12 @@ from io import BytesIO
 import json
 #%%
 # # %% Params
-# import data.farm.params as fp
-#  = fp.loadParams()
+import data.farm.params as fp
+farmMaterials, farmStats, numColsPriceTab = fp.loadParams()
 
 # # %% Inputs (setting default)
-# import data.farm.inputs as fi
-#  = ti.loadInputs()
+import data.farm.inputs as fi
+farmQuantities = fi.loadInputs()
 
 if 'materialPrices' not in st.session_state:
     import data.inputs as di
@@ -21,7 +21,42 @@ if 'materialPrices' not in st.session_state:
 else:
     materialsPrices = st.session_state['materialPrices']
 
+# %% Functions
+def computeTotalCost(farmStats, farmQuantities):
+    for mat in farmStats:
+        farmStats = {**farmStats, mat:{**farmStats[mat], 'totalCost':farmStats[mat]['cost']*farmQuantities[mat]}}
+    return farmStats
 
+def computeProfit(farmStats, materialsPrices, farmQuantities):
+    productsProfits = {}
+    for mat in farmStats:
+        productsProfits = {**productsProfits, mat:{'profitWorst':(farmStats[mat]['worst']*materialsPrices[mat]*farmQuantities[mat]- farmStats[mat]['totalCost']),
+                                                  'profitBest':(farmStats[mat]['best']*materialsPrices[mat]*farmQuantities[mat] - farmStats[mat]['totalCost'])}}
+    return productsProfits
+
+def splitOutput(farmStats, productsProfits):
+    materialCollect = {mat:farmStats[mat]['collect'] for mat in farmStats}
+    materialWorst = {mat:farmStats[mat]['worst'] for mat in farmStats}
+    materialBest = {mat:farmStats[mat]['best'] for mat in farmStats}
+    materialCost = {mat:farmStats[mat]['cost'] for mat in farmStats}
+    materialTotalCost = {mat:farmStats[mat]['totalCost'] for mat in farmStats}
+    materialProfitWorst = {mat:productsProfits[mat]['profitWorst'] for mat in farmStats}
+    materialProfitBest = {mat:productsProfits[mat]['profitBest'] for mat in farmStats}
+    return materialCollect, materialWorst, materialBest, materialCost, materialTotalCost, materialProfitWorst, materialProfitBest
+
+def createDataFrame(farmStats, materialsPrices, farmQuantities):
+    farmStats = computeTotalCost(farmStats=farmStats, farmQuantities=farmQuantities)
+    productsProfits = computeProfit(farmStats, materialsPrices, farmQuantities)
+    materialCollect, materialWorst, materialBest, materialCost, materialTotalCost, materialProfitWorst, materialProfitBest = splitOutput(farmStats, productsProfits)
+    df = pd.DataFrame({#'Coletas (x vezes)': materialCollect,
+                    #   'Pior cenário': materialWorst,
+                    #   'Melhor cenário': materialBest,
+                    #   'Custo de plantação': materialCost,
+                      'Quantidade': farmQuantities,
+                      'Custo Total': materialTotalCost,
+                      'Lucro Pior Cenário':materialProfitWorst,
+                      'Lucro Melhor Cenário':materialProfitBest})
+    return df
 # %% Page Header
 st.set_page_config(layout='wide')
 st.markdown("""
@@ -51,4 +86,5 @@ with cols[3]:
 
 # %% Page Body
 st.write('em breve...')
-st.write(st.session_state['materialPrices'])
+df = createDataFrame(farmStats, materialsPrices, farmQuantities)
+st.data_editor(df)
