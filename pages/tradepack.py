@@ -147,10 +147,10 @@ with pd.ExcelWriter(bufferTradepacks, engine='xlsxwriter') as writer:
 with st.sidebar:
     cityCraft = st.selectbox(label='Cidade de craft do tradepack',
                              options=cities,
-                             index=int(np.where(cities=='Defiance')[0]))
+                             index=np.where(cities=='Defiance')[0].tolist()[0])
     citySell = st.selectbox(label = 'Cidade de venda do tradepack',
-                            options = cities[~np.where(cities==cityCraft, True, False)],
-                            index=int(np.where(cities[~np.where(cities==cityCraft, True, False)]=='Orca Bay')[0]))
+                            options = cities[(~np.where(cities==cityCraft, True, False)).tolist()],
+                            index=int(np.where(cities[(~np.where(cities==cityCraft, True, False)).tolist()]=='Orca Bay')[0].tolist()[0]))
     cols=st.columns(2)
     with cols[0]:
         bonusPerCent = st.number_input(label='Bonus Tradepack (%)',min_value=0)
