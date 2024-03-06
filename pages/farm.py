@@ -97,15 +97,9 @@ with tabs[1]:
         dfaux = pd.read_excel(uploadedMaterialPrices,index_col=0)
         materialsPrices = dfaux.to_dict()['valor']
     cols = st.columns(numColsPriceTab)
-    for mat, col in zip(list(materialsPrices.keys()),cycle(np.arange(0,numColsPriceTab))):
-        if mat in farmMaterials:
-            materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
-            st.session_state['materialPrices'] = materialsPrices
-        else:
-            if (col-1) == -1:
-                col = numColsPriceTab-1
-            else:
-                col = col-1
+    for mat, col in zip(farmMaterials,cycle(np.arange(0,numColsPriceTab))):
+        materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
+        st.session_state['materialPrices'] = materialsPrices
     bufferMaterialPrices = BytesIO()
     with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
         pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')
