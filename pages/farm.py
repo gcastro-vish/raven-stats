@@ -30,8 +30,8 @@ def computeTotalCost(farmStats, farmQuantities):
 def computeProfit(farmStats, materialsPrices, farmQuantities):
     productsProfits = {}
     for mat in farmStats:
-        productsProfits = {**productsProfits, mat:{'profitWorst':(farmStats[mat]['worst']*materialsPrices[mat]*farmQuantities[mat]- farmStats[mat]['totalCost']),
-                                                  'profitBest':(farmStats[mat]['best']*materialsPrices[mat]*farmQuantities[mat] - farmStats[mat]['totalCost'])}}
+        productsProfits = {**productsProfits, mat:{'profitWorst':(farmStats[mat]['worst']*farmStats[mat]['collect']*materialsPrices[mat]*farmQuantities[mat]- farmStats[mat]['totalCost']),
+                                                  'profitBest':(farmStats[mat]['best']*farmStats[mat]['collect']*materialsPrices[mat]*farmQuantities[mat] - farmStats[mat]['totalCost'])}}
     return productsProfits
 
 def splitOutput(farmStats, productsProfits):
