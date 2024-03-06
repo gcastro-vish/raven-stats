@@ -12,7 +12,14 @@ tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab
 
 # %% Inputs (setting default)
 import data.tradepacks.inputs as ti
-materialsPrices, demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices = ti.loadInputs()
+demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices = ti.loadInputs()
+
+if 'materialPrices' not in st.session_state:
+    import data.inputs as di
+    materialsPrices = di.loadInputs()
+    st.session_state['materialPrices'] = materialsPrices
+else:
+    materialsPrices = st.session_state['materialPrices']
 
 # %% Classes (error treatment)
 class missingMaterialPrice(Exception):
@@ -169,6 +176,7 @@ with tabs[1]:
     cols = st.columns(numColsPriceTab)
     for mat, col in zip(list(materialsPrices.keys()),cycle(np.arange(0,numColsPriceTab))):
         materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
+        st.session_state['materialPrices'] = materialsPrices
     bufferMaterialPrices = BytesIO()
     with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
         pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')

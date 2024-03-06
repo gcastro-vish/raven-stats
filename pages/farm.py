@@ -1,9 +1,26 @@
+# %% Imports
 import numpy as np
 import streamlit as st
 from itertools import cycle
 import pandas as pd
 from io import BytesIO
 import json
+#%%
+# # %% Params
+# import data.farm.params as fp
+#  = fp.loadParams()
+
+# # %% Inputs (setting default)
+# import data.farm.inputs as fi
+#  = ti.loadInputs()
+
+if 'materialPrices' not in st.session_state:
+    import data.inputs as di
+    materialsPrices = di.loadInputs()
+    st.session_state['materialPrices'] = materialsPrices
+else:
+    materialsPrices = st.session_state['materialPrices']
+
 
 # %% Page Header
 st.set_page_config(layout='wide')
@@ -34,3 +51,4 @@ with cols[3]:
 
 # %% Page Body
 st.write('em breve...')
+st.write(st.session_state['materialPrices'])
