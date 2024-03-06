@@ -5,12 +5,12 @@ from itertools import cycle
 import pandas as pd
 from io import BytesIO
 import json
-#%%
-# # %% Params
+
+# %% Params
 import data.farm.params as fp
 farmMaterials, farmStats, numColsPriceTab = fp.loadParams()
 
-# # %% Inputs (setting default)
+# %% Inputs (setting default)
 import data.farm.inputs as fi
 farmQuantities = fi.loadInputs()
 
@@ -85,6 +85,67 @@ with cols[3]:
         st.switch_page("pages/crafting.py")
 
 # %% Page Body
-st.write('em breve...')
-df = createDataFrame(farmStats, materialsPrices, farmQuantities)
-st.data_editor(df)
+with st.sidebar:
+    bonusPerCent = st.number_input(label='Bonus Gather (%)',min_value=0)
+    uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
+                                            type='xlsx')    
+
+tabs = st.tabs(['Lucros', 'Preços', 'Quantidades'])
+
+with tabs[1]:
+    if uploadedMaterialPrices is not None:
+        dfaux = pd.read_excel(uploadedMaterialPrices,index_col=0)
+        materialsPrices = dfaux.to_dict()['valor']
+    cols = st.columns(numColsPriceTab)
+    for mat, col in zip(list(materialsPrices.keys()),cycle(np.arange(0,numColsPriceTab))):
+        if mat in farmMaterials:
+            materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
+            st.session_state['materialPrices'] = materialsPrices
+        else:
+            if (col-1) == -1:
+                col = numColsPriceTab-1
+            else:
+                col = col-1
+    bufferMaterialPrices = BytesIO()
+    with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
+        pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')
+        
+    with st.sidebar:
+        st.download_button(':small_red_triangle_down: Download Preços',
+                        bufferMaterialPrices,
+                        file_name='precos.xlsx',
+                        mime='application/vnd.ms-excel')
+
+with tabs[0]:
+    df = createDataFrame(farmStats, materialsPrices, farmQuantities)
+    st.dataframe(df,
+                column_config={
+                            'Quantidade':st.column_config.Column(
+                                'Quantidade',
+                                help = 'Número de pés referentes a esse cultivo',
+                                # format = '%d',
+                                # min_value = int(df['Quantidade'].min()),
+                                # max_value = int(df['Quantidade'].max()),
+                        ),
+                            'Custo Total':st.column_config.ProgressColumn(
+                                'Custo Total',
+                                format = '$%d',
+                                min_value = int(df['Custo Total'].min()),
+                                max_value = int(df['Custo Total'].max()),
+                        ),
+                            'Lucro Pior Cenário':st.column_config.ProgressColumn(
+                                'Lucro Pior Cenário',
+                                help = 'Lucro Pior Cenário',
+                                format = '$%d',
+                                min_value = int(df['Lucro Pior Cenário'].min()),
+                                max_value = int(df['Lucro Pior Cenário'].max()),
+                        ),
+                            'Lucro Melhor Cenário':st.column_config.ProgressColumn(
+                                'Lucro Melhor Cenário',
+                                help = 'Lucro Melhor Cenário',
+                                format = '$%d',
+                                min_value = int(df['Lucro Melhor Cenário'].min()),
+                                max_value = int(df['Lucro Melhor Cenário'].max()),
+                        ),
+                        },
+                        use_container_width=True)
