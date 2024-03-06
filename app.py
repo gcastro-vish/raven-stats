@@ -76,7 +76,7 @@ tradepacks = {'Aged Meat':{'Beef':12,'Salt':5,'Garlic':15},
             #   'Vegetable Stew':{'Brocolli':5,'Pumpkin':5,'Bean':25,'Potato':40},
               'Winemakers Kit':{'Grape':40,'Blueberry':15,'Moonberry':5}}
 tradepacks = dict(sorted(tradepacks.items()))
-tradepackBaseValue = 9600
+tradepackBaseValue = 10000
 
 numColsPriceTab = 5
 numColsDemandTab = 4
@@ -222,7 +222,7 @@ def computeTradepackCosts(tradepacks=tradepacks, materialsPrices=materialsPrices
 
 def computeTradepackSellPrices(route, bonus, tradepacks=tradepacks, __formula_alternativa__ = False):
     '''
-    tradepack formula: (tradepackBaseValue + 8*tiles)*demand*(1+bonus)
+    tradepack formula: (tradepackBaseValue + 6*tiles)*demand*(1+bonus)
     '''
     tradepackSellPrices = {}
     if __formula_alternativa__:
@@ -234,7 +234,7 @@ def computeTradepackSellPrices(route, bonus, tradepacks=tradepacks, __formula_al
     else:
         for t in list(tradepacks.keys()):
             try:
-                tradepackSellPrices = {**tradepackSellPrices, t:int(round((tradepackBaseValue + tiles[route]*8)*demands[t]*(1+bonus),2))}
+                tradepackSellPrices = {**tradepackSellPrices, t:int(round((tradepackBaseValue + tiles[route]*6)*demands[t]*(1+bonus),2))}
             except KeyError as e:
                 raise missingTradepackDemand(t)
     return tradepackSellPrices
@@ -262,7 +262,7 @@ st.markdown("""
 st.markdown('# Calculadora de Tradepacks <p class="small-font">(Feito por Vish. Ravendawn nick (Angerhorn): Vish Tankao)</p>', unsafe_allow_html=True)
 st.write('Atualize os preços e as demandas em suas respectivas abas. Manual para salvar os dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-salvar-os-dados) e manual para inclusão de dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-incluir-novos-dados)')
 st.write('A fórmula utilizada nos calculos é')
-st.write('$ValorDeVenda = (ValorBase + 8*Distância)*Demanda*(1+Bônus)$')
+st.write('$ValorDeVenda = (ValorBase + 6*Distância)*Demanda*(1+Bônus)$')
 st.write(f'Atualmente o valor base é :red[{tradepackBaseValue}]')
 
 bufferTradepacks = BytesIO()
