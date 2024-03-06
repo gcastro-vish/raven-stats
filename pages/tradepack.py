@@ -8,11 +8,18 @@ import json
 
 # %% Params
 import data.tradepacks.params as tp
-tiles, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
+tradepackMaterials, tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
 
 # %% Inputs (setting default)
 import data.tradepacks.inputs as ti
-materialsPrices, demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices = ti.loadInputs()
+demandsPerCent, route, demands = ti.loadInputs()
+
+if 'materialPrices' not in st.session_state:
+    import data.inputs as di
+    materialsPrices = di.loadInputs()
+    st.session_state['materialPrices'] = materialsPrices
+else:
+    materialsPrices = st.session_state['materialPrices']
 
 # %% Classes (error treatment)
 class missingMaterialPrice(Exception):
@@ -135,13 +142,20 @@ st.write(f'Atualmente o valor base é :red[{tradepackBaseValue}]')
 
 bufferTradepacks = BytesIO()
 with pd.ExcelWriter(bufferTradepacks, engine='xlsxwriter') as writer:
-    pd.DataFrame({'materiais':tradepacks}).to_excel(writer, sheet_name='Demandas')
-    
+    pd.DataFrame({'materiais':tradepacks}).to_excel(writer, sheet_name='Demandas')    
 
 with st.sidebar:
-    route = st.selectbox(label='Rota para fazer a entrega',
-                            options=sorted(list(tiles.keys())))
-    bonusPerCent = st.selectbox(label='Bonus Tradepack (%)',options=bonusesPerCentChoices)
+    cityCraft = st.selectbox(label='Cidade de craft do tradepack',
+                             options=cities,
+                             index=int(np.where(cities=='Defiance')[0]))
+    citySell = st.selectbox(label = 'Cidade de venda do tradepack',
+                            options = cities[~np.where(cities==cityCraft, True, False)],
+                            index=int(np.where(cities[~np.where(cities==cityCraft, True, False)]=='Orca Bay')[0]))
+    cols=st.columns(2)
+    with cols[0]:
+        bonusPerCent = st.number_input(label='Bonus Tradepack (%)',min_value=0)
+    with cols[1]:
+        bonusWarmode = st.checkbox(label='Warmode')
     uploadedTradepacks = st.file_uploader(':arrow_up_small: Upload Tradepacks',
                                             type='xlsx')
     uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
@@ -154,14 +168,15 @@ with st.sidebar:
                     mime='application/vnd.ms-excel')
 
 tabs = st.tabs(['Lucros', 'Preços', 'Demandas'])
-
+# tradepackMaterials = ['Copper Ore', 'Stone']
 with tabs[1]:
     if uploadedMaterialPrices is not None:
         dfaux = pd.read_excel(uploadedMaterialPrices,index_col=0)
         materialsPrices = dfaux.to_dict()['valor']
     cols = st.columns(numColsPriceTab)
-    for mat, col in zip(list(materialsPrices.keys()),cycle(np.arange(0,numColsPriceTab))):
+    for mat, col in zip(tradepackMaterials,cycle(np.arange(0,numColsPriceTab))):
         materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
+        st.session_state['materialPrices'] = materialsPrices
     bufferMaterialPrices = BytesIO()
     with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
         pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')
@@ -178,7 +193,7 @@ with tabs[2]:
         demandsPerCent = dfaux.to_dict()['demanda']
     cols = st.columns(numColsDemandTab)
     for dem, col in zip(list(demandsPerCent.keys()),cycle(np.arange(0,numColsDemandTab))):
-        demandsPerCent = {**demandsPerCent, dem:cols[col].number_input(label=dem,min_value=0,value=demandsPerCent[dem])}
+        demandsPerCent = {**demandsPerCent, dem:cols[col].slider(label=dem,min_value=0,value=demandsPerCent[dem], max_value=210)}
     demands = {k:v/100 for k,v in demandsPerCent.items()}
     bufferDemandsPerCent = BytesIO()
     with pd.ExcelWriter(bufferDemandsPerCent, engine='xlsxwriter') as writer:
@@ -195,9 +210,9 @@ with tabs[0]:
         dfaux = pd.read_excel(uploadedTradepacks,index_col=0)
         dfaux_ = dfaux.to_dict()['materiais']
         tradepacks = {k:json.loads(v.replace("'",'"')) for k,v in dfaux_.items()}
-    bonus = bonusPerCent/100
+    bonus = (bonusPerCent + int(np.where(bonusWarmode, 20, 0)))/100
+    route = [x for x in list(tiles.keys()) if cityCraft in x and citySell in x][0]
     df = createDataFrame(route=route, bonus=bonus, tradepacks=tradepacks, materialsPrices=materialsPrices)
-
     st.data_editor(df,
                     column_config={
                         'Custo':st.column_config.ProgressColumn(

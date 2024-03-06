@@ -1,43 +1,3 @@
-materialsPrices = {'Acorn': 999,
-                   'Apple': 525,
-                   'Banana': 508,
-                   'Bean': 160,
-                   'Beef': 20,
-                   'Blueberry': 59,
-                #    'Brocolli': 99999,
-                   'Cabbage': 260,
-                   'Carrot': 104,
-                   'Cheese': 2000,
-                #    'Cherry': 99999,
-                   'Chicken': 222,
-                   'Coal': 144,
-                   'Copper Ore': 45,
-                   'Corn': 225,
-                   'Cotton': 304,
-                   'Egg': 230,
-                   'Garlic':2600,
-                   'Grape': 289,
-                   'Ground Flour': 97,
-                   'Hide': 485,
-                   'Honey': 550,
-                   'Milk': 387,
-                   'Moonberry':1141,
-                   'Onion': 174,
-                   'Orange': 850,
-                   'Pea': 155,
-                   'Pepper': 182,
-                   'Potato': 58,
-                   'Pumpkin': 980,
-                   'Salt': 138,
-                   'Shank': 20,
-                   'Small Log': 97,
-                   'Stone': 60,
-                   'Strawberry': 118,
-                #    'Sunberry': 99999,
-                   'Watermelon': 1627,
-                   'Wheat': 116,
-                   'Wool': 640}
-
 demandsPerCent = {'Aged Meat':188,
                   'Bakers Basics':104,
                   'Barbecue Specialty':85,
@@ -76,10 +36,8 @@ demandsPerCent = {'Aged Meat':188,
                   # 'Vegetable Stew':100,
                   'Winemakers Kit':133}
 
-bonusPerCent = 0
-route = 'Seabreeze - Ravencrest'
+route = 'Orca Bay - Defiance'
 demands = {k:v/100 for k,v in demandsPerCent.items()}
-bonusesPerCentChoices = [0,5,20,25,40,45]
 
 def loadInputs():
-    return materialsPrices, demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices
+    return demandsPerCent, route, demands

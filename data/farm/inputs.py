@@ -1,0 +1,27 @@
+farmQuantities = {'Acorn': 10,
+             'Apple': 10,
+             'Banana': 10,
+             'Bean': 32,
+             'Blueberry': 32,
+             'Brocolli': 32,
+             'Cabbage': 32,
+             'Carrot': 32,
+             'Cherry': 10,
+             'Corn': 10,
+             'Cotton': 10,
+             'Garlic': 32,
+             'Grape': 32,
+             'Moonberry': 32,
+             'Onion': 32,
+             'Orange': 10,
+             'Pea': 32,
+             'Pepper': 32,
+             'Potato': 32,
+             'Pumpkin': 32,
+             'Strawberry': 32,
+             'Sunberry': 32,
+             'Watermelon': 32,
+             'Wheat': 32}
+
+def loadInputs():
+    return farmQuantities
