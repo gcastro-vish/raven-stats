@@ -8,7 +8,7 @@ import json
 
 # %% Params
 import data.tradepacks.params as tp
-tiles, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
+tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
 
 # %% Inputs (setting default)
 import data.tradepacks.inputs as ti
@@ -135,12 +135,13 @@ st.write(f'Atualmente o valor base é :red[{tradepackBaseValue}]')
 
 bufferTradepacks = BytesIO()
 with pd.ExcelWriter(bufferTradepacks, engine='xlsxwriter') as writer:
-    pd.DataFrame({'materiais':tradepacks}).to_excel(writer, sheet_name='Demandas')
-    
+    pd.DataFrame({'materiais':tradepacks}).to_excel(writer, sheet_name='Demandas')    
 
 with st.sidebar:
-    route = st.selectbox(label='Rota para fazer a entrega',
-                            options=sorted(list(tiles.keys())))
+    cityCraft = st.selectbox(label='Cidade de craft do tradepack',
+                             options=cities)
+    citySell = st.selectbox(label = 'Cidade de venda do tradepack',
+                            options = cities[~np.where(cities==cityCraft, True, False)])
     bonusPerCent = st.selectbox(label='Bonus Tradepack (%)',options=bonusesPerCentChoices)
     uploadedTradepacks = st.file_uploader(':arrow_up_small: Upload Tradepacks',
                                             type='xlsx')
@@ -196,8 +197,9 @@ with tabs[0]:
         dfaux_ = dfaux.to_dict()['materiais']
         tradepacks = {k:json.loads(v.replace("'",'"')) for k,v in dfaux_.items()}
     bonus = bonusPerCent/100
+    route = [x for x in list(tiles.keys()) if cityCraft in x and citySell in x][0]
     df = createDataFrame(route=route, bonus=bonus, tradepacks=tradepacks, materialsPrices=materialsPrices)
-
+    st.write(f'route: {route}')
     st.data_editor(df,
                     column_config={
                         'Custo':st.column_config.ProgressColumn(
