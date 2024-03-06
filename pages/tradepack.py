@@ -199,7 +199,6 @@ with tabs[0]:
     bonus = bonusPerCent/100
     route = [x for x in list(tiles.keys()) if cityCraft in x and citySell in x][0]
     df = createDataFrame(route=route, bonus=bonus, tradepacks=tradepacks, materialsPrices=materialsPrices)
-    st.write(f'route: {route}')
     st.data_editor(df,
                     column_config={
                         'Custo':st.column_config.ProgressColumn(
