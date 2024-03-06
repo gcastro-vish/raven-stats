@@ -2,8 +2,8 @@
 <div align="center"><img src="https://github.com/gcastro-vish/tradepack-calculator/assets/94566922/bcae3b9f-4983-4624-af90-9d788e2600d1" width="600" height="375"></div>
 <div align="center"><sub>(Print retirado de <a href="https://ravendawn.online/pt/">Ravendawn</a>)</sub></div>
 
-# Calculadora de Tradepacks
-Aplicação utilizando Python e Streamlit 🎈 para fazer uma calculadora de lucro ao vender tradepacks em Ravendawn.
+# Raven Stats
+Aplicação utilizando Python e Streamlit 🎈 para fazer calculos de eficiência em Ravendawn.
 
 ## Conteúdos
 
