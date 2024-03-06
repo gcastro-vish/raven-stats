@@ -36,10 +36,8 @@ demandsPerCent = {'Aged Meat':188,
                   # 'Vegetable Stew':100,
                   'Winemakers Kit':133}
 
-bonusPerCent = 0
 route = 'Orca Bay - Defiance'
 demands = {k:v/100 for k,v in demandsPerCent.items()}
-bonusesPerCentChoices = [0,5,20,25,40,45]
 
 def loadInputs():
-    return demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices
+    return demandsPerCent, route, demands

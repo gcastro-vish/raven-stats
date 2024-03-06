@@ -12,7 +12,7 @@ tradepackMaterials, tiles, cities, tradepacks, tradepackBaseValue, numColsPriceT
 
 # %% Inputs (setting default)
 import data.tradepacks.inputs as ti
-demandsPerCent, bonusPerCent, route, demands, bonusesPerCentChoices = ti.loadInputs()
+demandsPerCent, route, demands = ti.loadInputs()
 
 if 'materialPrices' not in st.session_state:
     import data.inputs as di
