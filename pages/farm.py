@@ -85,6 +85,8 @@ with cols[3]:
         st.switch_page("pages/crafting.py")
 
 # %% Page Body
+st.markdown('# Calculadora de Cultivo')
+st.write('Atualize os preços e as quantidades de pé em suas respectivas abas. Manual para salvar os dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-salvar-os-dados) e manual para inclusão de dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-incluir-novos-dados)')
 with st.sidebar:
     # bonusPerCent = st.number_input(label='Bonus Gather (%) - ainda nao funciona',min_value=0)
     uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
@@ -121,10 +123,7 @@ with tabs[0]:
                 column_config={
                             'Quantidade':st.column_config.Column(
                                 'Quantidade',
-                                help = 'Número de pés referentes a esse cultivo',
-                                # format = '%d',
-                                # min_value = int(df['Quantidade'].min()),
-                                # max_value = int(df['Quantidade'].max()),
+                                help = 'Número de pés referentes a esse cultivo'
                         ),
                             'Custo Total':st.column_config.ProgressColumn(
                                 'Custo Total',
