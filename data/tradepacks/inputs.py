@@ -77,7 +77,7 @@ demandsPerCent = {'Aged Meat':188,
                   'Winemakers Kit':133}
 
 bonusPerCent = 0
-route = 'Seabreeze - Ravencrest'
+route = 'Orca Bay - Defiance'
 demands = {k:v/100 for k,v in demandsPerCent.items()}
 bonusesPerCentChoices = [0,5,20,25,40,45]
 
