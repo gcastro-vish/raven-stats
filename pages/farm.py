@@ -86,7 +86,7 @@ with cols[3]:
 
 # %% Page Body
 with st.sidebar:
-    bonusPerCent = st.number_input(label='Bonus Gather (%)',min_value=0)
+    # bonusPerCent = st.number_input(label='Bonus Gather (%) - ainda nao funciona',min_value=0)
     uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
                                             type='xlsx')    
 
@@ -109,6 +109,11 @@ with tabs[1]:
                         bufferMaterialPrices,
                         file_name='precos.xlsx',
                         mime='application/vnd.ms-excel')
+
+with tabs[2]:
+    cols = st.columns(numColsPriceTab)
+    for mat, col in zip(farmMaterials,cycle(np.arange(0,numColsPriceTab))):
+        farmQuantities = {**farmQuantities, mat:cols[col].slider(label=mat,min_value=0,value=farmQuantities[mat], max_value=32)}
 
 with tabs[0]:
     df = createDataFrame(farmStats, materialsPrices, farmQuantities)
