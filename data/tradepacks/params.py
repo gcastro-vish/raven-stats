@@ -1,5 +1,45 @@
 import numpy as np
 
+tradepackMaterials = ['Acorn',
+                   'Apple',
+                   'Banana',
+                   'Bean',
+                   'Beef',
+                   'Blueberry',
+                #    'Brocolli',
+                   'Cabbage',
+                   'Carrot',
+                   'Cheese',
+                #    'Cherry',
+                   'Chicken',
+                   'Coal',
+                   'Copper Ore',
+                   'Corn',
+                   'Cotton',
+                   'Egg',
+                   'Garlic',
+                   'Grape',
+                   'Ground Flour',
+                   'Hide',
+                   'Honey',
+                   'Milk',
+                   'Moonberry',
+                   'Onion',
+                   'Orange',
+                   'Pea',
+                   'Pepper',
+                   'Potato',
+                   'Pumpkin',
+                   'Salt',
+                   'Shank',
+                   'Small Log',
+                   'Stone',
+                   'Strawberry',
+                #    'Sunberry',
+                   'Watermelon',
+                   'Wheat',
+                   'Wool']
+
 tiles = {'Riverend - Margrove': 586,
          'Riverend - Orca Bay': 814,
          'Riverend - Seabreeze': 1528,
@@ -93,4 +133,4 @@ numColsPriceTab = 5
 numColsDemandTab = 4
 
 def loadParams():
-    return tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab
+    return tradepackMaterials, tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab

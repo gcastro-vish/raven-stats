@@ -8,7 +8,7 @@ import json
 
 # %% Params
 import data.tradepacks.params as tp
-tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
+tradepackMaterials, tiles, cities, tradepacks, tradepackBaseValue, numColsPriceTab, numColsDemandTab = tp.loadParams()
 
 # %% Inputs (setting default)
 import data.tradepacks.inputs as ti
@@ -168,15 +168,16 @@ with st.sidebar:
                     mime='application/vnd.ms-excel')
 
 tabs = st.tabs(['Lucros', 'Preços', 'Demandas'])
-
+# tradepackMaterials = ['Copper Ore', 'Stone']
 with tabs[1]:
     if uploadedMaterialPrices is not None:
         dfaux = pd.read_excel(uploadedMaterialPrices,index_col=0)
         materialsPrices = dfaux.to_dict()['valor']
     cols = st.columns(numColsPriceTab)
     for mat, col in zip(list(materialsPrices.keys()),cycle(np.arange(0,numColsPriceTab))):
-        materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
-        st.session_state['materialPrices'] = materialsPrices
+        if mat in tradepackMaterials:
+            materialsPrices = {**materialsPrices, mat:cols[col].number_input(label=mat,min_value=20,value=materialsPrices[mat])}
+            st.session_state['materialPrices'] = materialsPrices
     bufferMaterialPrices = BytesIO()
     with pd.ExcelWriter(bufferMaterialPrices, engine='xlsxwriter') as writer:
         pd.DataFrame({'valor':materialsPrices}).to_excel(writer, sheet_name='Preços')
