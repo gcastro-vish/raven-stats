@@ -21,16 +21,16 @@ st.markdown('# RavenStats <p class="small-font">(Feito por Vish. Ravendawn nick 
 cols = st.columns(4)
 
 with cols[0]:
-    if st.button("Home :house:"):
+    if st.button(":house: Home"):
         st.switch_page("app.py")
 with cols[1]:
-    if st.button("Tradepacks :package:"):
+    if st.button(":package: Tradepacks"):
         st.switch_page("pages/tradepack.py")
 with cols[2]:
-    if st.button("Fazenda :female-farmer:"):
+    if st.button(":female-farmer: Fazenda"):
         st.switch_page("pages/farm.py")
 with cols[3]:
-    if st.button("Crafting :hammer_and_wrench:"):
+    if st.button(":hammer_and_wrench: Crafting"):
         st.switch_page("pages/crafting.py")
 
 # %% Page Body
