@@ -149,8 +149,8 @@ with st.sidebar:
                              options=cities,
                              index=np.where(cities=='Defiance')[0].tolist()[0])
     citySell = st.selectbox(label = 'Cidade de venda do tradepack',
-                            options = cities[(~np.where(cities==cityCraft, True, False)).tolist()],
-                            index=int(np.where(cities[(~np.where(cities==cityCraft, True, False)).tolist()]=='Orca Bay')[0].tolist()[0]))
+                            options = cities,
+                            index=np.where(cities=='Orca Bay')[0].tolist()[0])
     cols=st.columns(2)
     with cols[0]:
         bonusPerCent = st.number_input(label='Bonus Tradepack (%)',min_value=0)
@@ -211,7 +211,11 @@ with tabs[0]:
         dfaux_ = dfaux.to_dict()['materiais']
         tradepacks = {k:json.loads(v.replace("'",'"')) for k,v in dfaux_.items()}
     bonus = (bonusPerCent + int(np.where(bonusWarmode, 20, 0)))/100
-    route = [x for x in list(tiles.keys()) if cityCraft in x and citySell in x][0]
+    if cityCraft == citySell:
+        route = cityCraft + ' - ' + citySell
+        st.write(':red[A cidade de craft é a mesma cidade de venda!]')
+    else:
+        route = [x for x in list(tiles.keys()) if cityCraft in x and citySell in x][0]
     df = createDataFrame(route=route, bonus=bonus, tradepacks=tradepacks, materialsPrices=materialsPrices)
     st.data_editor(df,
                     column_config={

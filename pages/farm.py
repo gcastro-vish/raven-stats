@@ -48,14 +48,18 @@ def createDataFrame(farmStats, materialsPrices, farmQuantities):
     farmStats = computeTotalCost(farmStats=farmStats, farmQuantities=farmQuantities)
     productsProfits = computeProfit(farmStats, materialsPrices, farmQuantities)
     materialCollect, materialWorst, materialBest, materialCost, materialTotalCost, materialProfitWorst, materialProfitBest = splitOutput(farmStats, productsProfits)
-    df = pd.DataFrame({#'Coletas (x vezes)': materialCollect,
-                    #   'Pior cenário': materialWorst,
-                    #   'Melhor cenário': materialBest,
-                    #   'Custo de plantação': materialCost,
-                      'Quantidade': farmQuantities,
-                      'Custo Total': materialTotalCost,
-                      'Lucro Pior Cenário':materialProfitWorst,
-                      'Lucro Melhor Cenário':materialProfitBest})
+    df = pd.DataFrame({'Coletas (x vezes)': materialCollect,
+                       'Pior cenário': materialWorst,
+                       'Melhor cenário': materialBest,
+                       'Custo de plantação': materialCost,
+                       'Quantidade': farmQuantities,
+                       'Custo Total': materialTotalCost,
+                       'Lucro Pior Cenário':materialProfitWorst,
+                       'Lucro Melhor Cenário':materialProfitBest})
+    return df
+
+def onChangeDataFrame(df):
+    df
     return df
 # %% Page Header
 st.set_page_config(layout='wide')
@@ -119,8 +123,13 @@ with tabs[2]:
 
 with tabs[0]:
     df = createDataFrame(farmStats, materialsPrices, farmQuantities)
-    st.dataframe(df,
+    st.data_editor(df,
                 column_config={
+                            'Coletas (x vezes)':None,
+                            'Coletas (x vezes)': None,
+                            'Pior cenário': None,
+                            'Melhor cenário': None,
+                            'Custo de plantação': None,
                             'Quantidade':st.column_config.Column(
                                 'Quantidade',
                                 help = 'Número de pés referentes a esse cultivo'
