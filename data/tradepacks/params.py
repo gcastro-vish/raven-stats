@@ -84,10 +84,19 @@ tiles = {'Riverend - Margrove': 586,
          'Gilead - Defiance': 1495,
          'Glaceford - Ravencrest': 741,
          'Glaceford - Defiance': 1242,
-         'Ravencrest - Defiance': 774}
+         'Ravencrest - Defiance': 774,
+         'Darzuac - Darzuac': 0,
+         'Defiance - Defiance': 0,
+         'Gilead - Gilead': 0,
+         'Margrove - Margrove': 0,
+         'Orca Bay - Orca Bay': 0,
+         'Ravencrest - Ravencrest': 0,
+         'Riverend - Riverend': 0,
+         'Seabeeze - Seabeeze': 0,
+         'Tarmire - Tarmire': 0}
 
 cities = np.array(sorted(['Darzuac', 'Defiance', 'Gilead', 'Margrove', 'Orca Bay',
-                          'Ravencrest', 'Riverend', 'Seabeeze', 'Seabreeze', 'Tarmire']))
+                          'Ravencrest', 'Riverend', 'Seabeeze', 'Tarmire']))
 
 tradepacks = {'Aged Meat':{'Beef':12,'Salt':5,'Garlic':15},
               'Bakers Basics':{'Milk':15,'Egg':30,'Ground Flour':35},
