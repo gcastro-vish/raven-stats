@@ -103,7 +103,7 @@ with st.sidebar:
     uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
                                             type='xlsx')    
 
-tabs = st.tabs(['Lucros', 'Preços', 'Quantidades'])
+tabs = st.tabs(['Lucros', 'Preços'])
 
 with tabs[1]:
     if uploadedMaterialPrices is not None:
@@ -122,11 +122,6 @@ with tabs[1]:
                         bufferMaterialPrices,
                         file_name='precos.xlsx',
                         mime='application/vnd.ms-excel')
-    
-with tabs[2]:
-    cols = st.columns(numColsPriceTab)
-    for mat, col in zip(farmMaterials,cycle(np.arange(0,numColsPriceTab))):
-        farmQuantities = {**farmQuantities, mat:cols[col].slider(label=mat,min_value=0,value=farmQuantities[mat], max_value=32)}
 
 with tabs[0]:
     if 'farmDf' not in st.session_state:
