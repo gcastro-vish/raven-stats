@@ -96,7 +96,8 @@ with cols[3]:
 
 # %% Page Body
 st.markdown('# Calculadora de Cultivo')
-st.write('Atualize os preços e as quantidades de pé em suas respectivas abas. Manual para salvar os dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-salvar-os-dados) e manual para inclusão de dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-incluir-novos-dados)')
+st.write('Atualize a quantidade de pés na própria tabela e o preço em sua respectiva aba. Manual para salvar os dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-salvar-os-dados) e manual para inclusão de dados [aqui](https://github.com/gcastro-vish/tradepack-calculator/tree/main?tab=readme-ov-file#como-incluir-novos-dados)')
+st.write('Utilize o botão lateral para atualizar a tabela: :red[dê 2 cliques para atualizar, funciona meio esquisito, mas funciona :skull:]')
 with st.sidebar:
     # bonusPerCent = st.number_input(label='Bonus Gather (%) - ainda nao funciona',min_value=0)
     uploadedMaterialPrices = st.file_uploader(':arrow_up_small: Upload Preços',
@@ -166,10 +167,7 @@ with tabs[0]:
                         # on_change=onChangeDataFrame,
                         use_container_width=True)
     with st.sidebar:
-        if st.button(':arrows_clockwise: :green[Atualizar Tabela de Lucros]'):
-            if not st.session_state['farmDf'].equals(editedDf):
-                st.session_state['farmDf'] = editedDf
-                onChangeDataFrame()
-                st.rerun()
-            else:
-                st.session_state['farmDf'] = createDataFrame(farmStats, materialsPrices, farmQuantities)
+        if st.button(''':arrows_clockwise: :green[Atualizar Tabela de Lucros]'''):
+            st.session_state['farmDf'] = editedDf
+            onChangeDataFrame()
+            st.rerun()
